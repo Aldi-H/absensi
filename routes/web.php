@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +21,8 @@ Route::get('/', function () {
 Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::get('/attendance/create', [AttendanceController::class, 'store'])->name('attendance.create');
 
-Route::get('/attendance/entry', [AttendanceController::class, 'showEntryAttendance']);
-Route::get('/attendance/exit', [AttendanceController::class, 'showExitAttendance']);
+Route::get('/attendance/entry', [AttendanceController::class, 'showEntryAttendance'])->name('attendance.showEntry');
+Route::get('/attendance/exit', [AttendanceController::class, 'showExitAttendance'])->name('attendance.showExit');
 
 Route::post('/attendance/entry', [AttendanceController::class, 'entryAttendance'])->name('attendance.entry');
 Route::post('/attendance/exit', [AttendanceController::class, 'exitAttendance'])->name('attendance.exit');

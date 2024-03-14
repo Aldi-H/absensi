@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AttendanceController extends Controller
 {
@@ -28,7 +31,7 @@ class AttendanceController extends Controller
       'user_id' => Auth::id(),
     ]);
 
-    return redirect()->route('home');
+    return redirect()->route('attendance.index');
   }
 
   public function showEntryAttendance()
@@ -46,20 +49,20 @@ class AttendanceController extends Controller
     $attendance = Attendance::where('code', $request->code)->first();
 
     if ($attendance == null) {
-      return redirect()->route('home')->with(['failed' => 'Kode absen tidak ada']);
+      return redirect()->route('attendance.index')->with(['failed' => 'Kode absen tidak ada']);
     }
     if ($attendance->status == 1) {
-      return redirect()->route('home')->with(['failed' => 'Absen sudah dipakai']);
+      return redirect()->route('attendance.index')->with(['failed' => 'Absen sudah dipakai']);
     }
     if ($attendance->user_id == Auth::id()) {
-      return redirect()->route('home')->with(['failed' => 'Tidak bisa absen diri sendiri']);
+      return redirect()->route('attendance.index')->with(['failed' => 'Tidak bisa absen diri sendiri']);
     }
 
     $attendance->entry_time = now();
     $attendance->status = 1;
     $attendance->save();
 
-    return redirect()->route('home')->with(['success' => 'Absen berhasil']);
+    return redirect()->route('attendance.index')->with(['success' => 'Absen berhasil']);
   }
 
   public function exitAttendance(Request $request)
@@ -67,16 +70,16 @@ class AttendanceController extends Controller
     $attendance = Attendance::where('code', $request->code)->first();
 
     if ($attendance == null) {
-      return redirect()->route('home')->with(['failed' => 'Kode absen tidak ada']);
+      return redirect()->route('attendance.index')->with(['failed' => 'Kode absen tidak ada']);
     }
     if ($attendance->user_id == Auth::id()) {
-      return redirect()->route('home')->with(['failed' => 'Tidak bisa absen diri sendiri']);
+      return redirect()->route('attendance.index')->with(['failed' => 'Tidak bisa absen diri sendiri']);
     }
 
     $attendance->exit_time = now();
     $attendance->status = 1;
     $attendance->save();
 
-    return redirect()->route('home')->with(['success' => 'Absen berhasil']);
+    return redirect()->route('attendance.index')->with(['success' => 'Absen berhasil']);
   }
 }
