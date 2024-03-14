@@ -17,6 +17,15 @@ Route::get('/', function () {
   return view('auth.login');
 });
 
+Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/attendance/create', [AttendanceController::class, 'store'])->name('attendance.create');
+
+Route::get('/attendance/entry', [AttendanceController::class, 'showEntryAttendance']);
+Route::get('/attendance/exit', [AttendanceController::class, 'showExitAttendance']);
+
+Route::post('/attendance/entry', [AttendanceController::class, 'entryAttendance'])->name('attendance.entry');
+Route::post('/attendance/exit', [AttendanceController::class, 'exitAttendance'])->name('attendance.exit');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
